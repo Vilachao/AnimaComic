@@ -137,8 +137,7 @@
         [context deleteObject:expositor];
     }
     NSError *saveError = nil;
-    [context save:&saveError];
-    
+    [context save:&saveError];    
 }
 
 

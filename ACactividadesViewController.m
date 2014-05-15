@@ -20,6 +20,7 @@
 {
     int offsetActividad;
     int indiceActividad;
+    int semaforo;
 }
 
 
@@ -42,6 +43,7 @@
 
 - (void)viewDidLoad
 {
+    semaforo = 0;
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES animated:YES];
 #ifdef LITE
@@ -68,16 +70,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 
-    NSLog(@"Filtro %@",self.filtro);
-    
-    if (self.filtro==NULL){
     [self loadData];
-    }
-    if(![self.listaActividades count])
+    NSLog(@"valor %d",[self.listaActividades count]);
+    if([self.listaActividades count]<1)
         [self getActividadWS];
-
-
-
 }
 
 
@@ -109,14 +105,40 @@
         [alert show];
         return;
 	}
+    if(!semaforo)
+    {
+        semaforo = 1;
+        [self borrarBD];
+    }
     ANArrayOfActividad* result = (ANArrayOfActividad*)value;
         if(result && ([result.actividads count] > 0)){
             [self insertaActividad:result.actividads :0];
             NSLog(@"getActividades returned the value: %@", result.actividads);
         }else{
             //entra cuando ha terminado de cargar todos los datos de la BD
+            semaforo =0;
             [self loadData];
         }
+}
+
+
+-(void)borrarBD{
+    ACAppDelegate *appDelegate = (ACAppDelegate *) [UIApplication sharedApplication].delegate;
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest * allActividades = [[NSFetchRequest alloc] init];
+    [allActividades setEntity:[NSEntityDescription entityForName:@"Actividad" inManagedObjectContext:context]];
+    [allActividades setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+    
+    NSError * error = nil;
+    NSArray * actividades = [context executeFetchRequest:allActividades error:&error];
+    
+    //error handling goes here
+    for (NSManagedObject * actividad in actividades) {
+        [context deleteObject:actividad];
+    }
+    NSError *saveError = nil;
+    [context save:&saveError];
+
 }
 
 - (void)insertaActividad:(NSMutableArray *)Actividads :(int)offset {
@@ -153,32 +175,23 @@
 
 - (void)loadData {
     
-    self.listaActividades = [[NSMutableArray alloc]init];
-    
-    if (self.filtro==NULL){
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Actividad"];
-    ACAppDelegate *appDelegate = (ACAppDelegate *) [UIApplication sharedApplication].delegate;
-    self.listaActividades = [appDelegate.managedObjectContext executeFetchRequest:request error:nil];
-    }else{
-        
-        int i;
-        int count;
-        count = [self.filtro count];
-        for (i = 0; i < count; i++){
-            
+
+    if (!self.filtro || ![self.filtro count]){
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Actividad"];
-        request.predicate = [NSPredicate predicateWithFormat:@"(tipo == %@)",[self.filtro objectAtIndex:i]];
-            NSLog(@"object: %@",[self.filtro objectAtIndex:i]);
         ACAppDelegate *appDelegate = (ACAppDelegate *) [UIApplication sharedApplication].delegate;
-            NSMutableArray * listaTemporal = [appDelegate.managedObjectContext executeFetchRequest:request error:nil];
-            NSLog(@"ListaT: %@",listaTemporal);
-            //self.listaActividades = [appDelegate.managedObjectContext executeFetchRequest:request error:nil];
-            [self.listaActividades addObjectsFromArray:listaTemporal];
-            NSLog(@"ListaActividades: %@", self.listaActividades);
-    }
-        
-        
-        
+        self.listaActividades = [[NSMutableArray alloc] initWithArray:[appDelegate.managedObjectContext executeFetchRequest:request error:nil]];
+
+    }else{
+        if(!self.listaActividades)
+            self.listaActividades = [[NSMutableArray alloc] init];
+        for (NSString *actividad in self.filtro) {
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Actividad"];
+            request.predicate = [NSPredicate predicateWithFormat:@"(tipo == %@)",actividad];
+            NSLog(@"Actividad: %@",actividad);
+            ACAppDelegate *appDelegate = (ACAppDelegate *) [UIApplication sharedApplication].delegate;
+            [self.listaActividades addObjectsFromArray:[appDelegate.managedObjectContext executeFetchRequest:request error:nil]];
+        }
+        NSLog(@"ListaActividades: %@", self.listaActividades);
     }
     [self.tableActividad reloadData];
     
