@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Actividad" representedClassName="Actividad" syncable="YES">
+        <attribute name="descripcion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dia" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="facebook" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="horaFin" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="horaInicio" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idActividad" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="lugar" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rutaFoto" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subtitulo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tipo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="titulo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="web" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Entrada" representedClassName="Entrada" syncable="YES">
+        <attribute name="codigo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dni" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idEntrada" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="nombre" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tipo" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Expositor" representedClassName="Expositor" syncable="YES">
+        <attribute name="correo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="descripcion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="facebook" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idExpositor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="nombre" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rutaLogo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="telefono" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="web" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Usuario" representedClassName="Usuario" syncable="YES">
+        <attribute name="clave" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idUsuario" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="tipo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="usuario" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Actividad" positionX="-153" positionY="26" width="128" height="238"/>
+        <element name="Entrada" positionX="-11" positionY="-117" width="128" height="133"/>
+        <element name="Expositor" positionX="-315" positionY="23" width="128" height="178"/>
+        <element name="Usuario" positionX="-225" positionY="-144" width="128" height="103"/>
+    </elements>
+</model>
